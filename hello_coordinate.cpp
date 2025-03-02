@@ -5,7 +5,7 @@
 #include <cmath>
 #include "my_config.h"
 #include "shader.h"
-#define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION // 这个宏整个项目只能定义一次
 #include "stb_image.h"
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
