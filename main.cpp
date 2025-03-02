@@ -10,6 +10,7 @@ extern int L05_texture_main();
 extern int L06_transform_main();
 extern int L07_coordinate_main();
 extern int L08_camera_main();
+extern int L08_camera_class_main();
 
 int main()
 {

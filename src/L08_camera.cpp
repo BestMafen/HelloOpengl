@@ -12,7 +12,21 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
+static glm::vec3 cameraPos = glm::vec3(.0f, .0f, 3.f);
+static glm::vec3 cameraFront = glm::vec3(.0f, .0f, -1.f);
+static glm::vec3 cameraUp = glm::vec3(.0f, 1.f, .0f);
+
+static float deltaTime = .0f; // 当前帧与上一帧的时间差
+static float lastFrame = .0f; // 上一帧的时间
+
+static float lastX = (float) SCR_WIDTH / 2, lastY = (float) SCR_HEIGHT;
+static float pitch = .0f, yaw = -90.f;
+static float fov = 45.f;
+
+
 static void framebuffer_size_callback(GLFWwindow *window, int width, int height);
+static void mouse_callback(GLFWwindow *window, double xPos, double yPos);
+static void scroll_callback(GLFWwindow* window, double xOffset, double yOffset);
 static void processInput(GLFWwindow *window);
 
 int L08_camera_main()
@@ -35,6 +49,9 @@ int L08_camera_main()
     }
 
     glfwMakeContextCurrent(window);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, scroll_callback);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
@@ -175,10 +192,22 @@ int L08_camera_main()
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture1);
 
-        glm::mat4 view;
-        view = glm::translate(view, glm::vec3(.0f, .0f, -3.f));
+//        GLfloat radius = 10.f/* * sinf((GLfloat) glfwGetTime())*/;
+//        GLfloat camX = sinf((GLfloat) glfwGetTime()) * radius;
+//        GLfloat camZ = cosf((GLfloat) glfwGetTime()) * radius;
+//        glm::mat4 view;
+//        view = glm::lookAt(glm::vec3(camX, 0.f, camZ), glm::vec3(.0f, .0f, .0f), glm::vec3(.0f, 1.f, .0f));
+
+        glm::vec3 front;
+        front.x = cosf(glm::radians(pitch)) * cosf(glm::radians(yaw));
+        front.y = sinf(glm::radians(pitch));
+        front.z = cosf(glm::radians(pitch)) * sinf(glm::radians(yaw));
+        cameraFront = glm::normalize(front);
+        glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+
+
         glm::mat4 projection;
-        projection = glm::perspective(glm::radians(45.f), (GLfloat) SCR_WIDTH / (GLfloat) SCR_HEIGHT, .1f, 100.f);
+        projection = glm::perspective(glm::radians(fov), (GLfloat) SCR_WIDTH / (GLfloat) SCR_HEIGHT, .1f, 100.f);
         
         ourShader.setMatrix4fv("view", GL_FALSE, glm::value_ptr(view));
         ourShader.setMatrix4fv("projection", GL_FALSE, glm::value_ptr(projection));
@@ -194,6 +223,10 @@ int L08_camera_main()
             glDrawArrays(GL_TRIANGLES,0, 36);
         }
 
+        auto currentFrame = (float) glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+        
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
@@ -210,8 +243,47 @@ static void framebuffer_size_callback(GLFWwindow *window, const int width, const
     glViewport(0, 0, width, height);
 }
 
+static void mouse_callback(GLFWwindow *window, double xPos, double yPos)
+{
+    float xOffset = (float) xPos - lastX;
+    float yOffset = lastY - (float) yPos; // 注意这里是相反的，因为y坐标是从底部往顶部依次增大的
+    lastX = (float) xPos;
+    lastY = (float) yPos;
+
+    float sensitivity = 0.05f;
+    xOffset *= sensitivity;
+    yOffset *= sensitivity;
+
+    yaw += xOffset;
+    pitch += yOffset;
+    if (pitch > 89.0f)
+        pitch = 89.0f;
+    if (pitch < -89.0f)
+        pitch = -89.0f;
+}
+
+static void scroll_callback(GLFWwindow* window, double xOffset, double yOffset)
+{
+    if(fov >= 1.0f && fov <= 60.0f)
+        fov -= (float) yOffset;
+    if(fov <= 1.0f)
+        fov = 1.0f;
+    if(fov >= 60.0f)
+        fov = 60.0f;
+}
+
 static void processInput(GLFWwindow *window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
+
+    GLfloat cameraSpeed = 2.5f * deltaTime;
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        cameraPos += cameraSpeed * cameraFront;
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        cameraPos -= cameraSpeed * cameraFront;
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 }
