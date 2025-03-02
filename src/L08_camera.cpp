@@ -5,7 +5,6 @@
 #include <cmath>
 #include "my_config.h"
 #include "shader.h"
-//#define STB_IMAGE_IMPLEMENTATION // 这个宏整个项目只能定义一次
 #include "stb_image.h"
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
@@ -16,7 +15,7 @@
 static void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 static void processInput(GLFWwindow *window);
 
-int hello_texture_main()
+int L08_camera_main()
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -44,23 +43,65 @@ int hello_texture_main()
         return -1;
     }
 
-    const Shader ourShader("shader_texture.vs", "shader_texture.fs");
+    const Shader ourShader("shader_coordinate.vs", "shader_coordinate.fs");
 
     constexpr GLfloat vertices[] = {
-        //     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
-        0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // 右上
-        0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // 右下
-       -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // 左下
-       -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // 左上
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+        0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+        0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+        0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
     };
-    constexpr GLubyte indices[] = {
-        // 注意索引从0开始! 
-        // 此例的索引(0,1,2,3)就是顶点数组vertices的下标，
-        // 这样可以由下标代表顶点组合成矩形
-        0, 1, 3, // 第一个三角形
-        1, 2, 3, // 第二个三角形
+    glm::vec3 cubePositions[] = {
+        glm::vec3(0.0f, 0.0f, 0.0f),
+        glm::vec3(2.0f, 5.0f, -15.0f),
+        glm::vec3(-1.5f, -2.2f, -2.5f),
+        glm::vec3(-3.8f, -2.0f, -12.3f),
+        glm::vec3(2.4f, -0.4f, -3.5f),
+        glm::vec3(-1.7f, 3.0f, -7.5f),
+        glm::vec3(1.3f, -2.0f, -2.5f),
+        glm::vec3(1.5f, 2.0f, -2.5f),
+        glm::vec3(1.5f, 0.2f, -1.5f),
+        glm::vec3(-1.3f, 1.0f, -1.5f)
     };
-    GLuint VAO, VBO, EBO;
+    
+    GLuint VAO, VBO;
 
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
@@ -68,16 +109,10 @@ int hello_texture_main()
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, nullptr);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, nullptr);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, reinterpret_cast<void*>(3 * sizeof(float)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, reinterpret_cast<void*>(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 8, reinterpret_cast<void*>(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
-
-    glGenBuffers(1, &EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
@@ -133,21 +168,31 @@ int hello_texture_main()
         processInput(window);
 
         glClearColor(.2f, .3f, .3f, 1.f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture1);
 
-        glm::mat4 trans;
-        trans = glm::translate(trans, glm::vec3(.5f, -.5f, .0f));
-        trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(.0f, .0f, 1.f));
-        ourShader.setMatrix4fv("transform", GL_FALSE, glm::value_ptr(trans));
+        glm::mat4 view;
+        view = glm::translate(view, glm::vec3(.0f, .0f, -3.f));
+        glm::mat4 projection;
+        projection = glm::perspective(glm::radians(45.f), (GLfloat) SCR_WIDTH / (GLfloat) SCR_HEIGHT, .1f, 100.f);
+        
+        ourShader.setMatrix4fv("view", GL_FALSE, glm::value_ptr(view));
+        ourShader.setMatrix4fv("projection", GL_FALSE, glm::value_ptr(projection));
         ourShader.use();
 
+        glEnable(GL_DEPTH_TEST);
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, nullptr);
+        for (int32_t i = 0; i < sizeof(cubePositions) / sizeof(*cubePositions); i++) {
+            glm::mat4 model;
+            model = glm::translate(model, cubePositions[i]);
+            model = glm::rotate(model, (float) glfwGetTime() * glm::radians(20.f * (float) (i + 1)), glm::vec3(.5f, 1.f, .0f));
+            ourShader.setMatrix4fv("model", GL_FALSE, glm::value_ptr(model));
+            glDrawArrays(GL_TRIANGLES,0, 36);
+        }
 
         glfwSwapBuffers(window);
         glfwPollEvents();
