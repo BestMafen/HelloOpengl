@@ -7,9 +7,12 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 link_directories(${PROJECT_SOURCE_DIR}/lib)
 
 add_executable(HelloOpengl main.cpp src/glad.c
-    hello_window.cpp
+    hello_coordinate.cpp
+    hello_shader.cpp
+    hello_transform.cpp
+    hello_texture.cpp
     hello_triangle.cpp
     hello_triangle_ebo.cpp
-    hello_shader.cpp
+    hello_window.cpp
 )
 target_link_libraries(HelloOpengl ${PROJECT_SOURCE_DIR}/lib/glfw3.dll)

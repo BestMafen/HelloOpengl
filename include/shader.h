@@ -11,7 +11,7 @@
 class Shader
 {
 public:
-    unsigned int ID;
+    GLuint ID;
     // constructor generates the shader on the fly
     // ------------------------------------------------------------------------
     Shader(const char *vertexPath, const char *fragmentPath)
@@ -47,7 +47,7 @@ public:
         const char *vShaderCode = vertexCode.c_str();
         const char *fShaderCode = fragmentCode.c_str();
         // 2. compile shaders
-        unsigned int vertex, fragment;
+        GLuint vertex, fragment;
         // vertex shader
         vertex = glCreateShader(GL_VERTEX_SHADER);
         glShaderSource(vertex, 1, &vShaderCode, nullptr);
@@ -80,27 +80,32 @@ public:
     // ------------------------------------------------------------------------
     void setBool(const std::string& name, const bool value) const
     {
-        glUniform1i(glGetUniformLocation(ID, name.c_str()), static_cast<int>(value));
+        glUniform1i(glGetUniformLocation(ID, name.c_str()), static_cast<GLint>(value));
     }
 
     // ------------------------------------------------------------------------
-    void setInt(const std::string& name, const int value) const
+    void setInt(const std::string& name, const GLint value) const
     {
         glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
     }
 
     // ------------------------------------------------------------------------
-    void setFloat(const std::string& name, const float value) const
+    void setFloat(const std::string& name, const GLfloat value) const
     {
         glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
     }
 
+    void setMatrix4fv(const std::string& name, GLboolean transpose, const GLfloat *value) const
+    {
+        glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, transpose, value);
+    }
+    
 private:
     // utility function for checking shader compilation/linking errors.
     // ------------------------------------------------------------------------
-    static void checkCompileErrors(const unsigned int shader, const std::string& type)
+    static void checkCompileErrors(const GLuint shader, const std::string& type)
     {
-        int success;
+        GLint success;
         char infoLog[1024];
         if (type != "PROGRAM")
         {
