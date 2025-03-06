@@ -12,8 +12,9 @@ extern int L07_coordinate_main();
 extern int L08_camera_main();
 extern int L08_camera_class_main();
 extern int L09_basic_lighting_main();
+extern int L10_material_main();
 
 int main()
 {
-    return L09_basic_lighting_main();
+    return L07_coordinate_main();
 }
