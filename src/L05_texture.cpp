@@ -109,7 +109,7 @@ int L05_texture_main()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     stbi_set_flip_vertically_on_load(true);
-    data = stbi_load("img1.png", &width, &height, &nrChannels, 0);
+    data = stbi_load(IMAGE_DIR"img1.png", &width, &height, &nrChannels, 0);
     // std::cout << "width=" << width << ", height=" << height << ", nrChannels=" << nrChannels << std::endl;
     if (data)
     {
