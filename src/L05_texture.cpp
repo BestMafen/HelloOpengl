@@ -44,7 +44,7 @@ int L05_texture_main()
         return -1;
     }
 
-    const Shader ourShader("shader_texture.vs", "shader_texture.fs");
+    const Shader ourShader(SHADER_DIR"texture.vs", SHADER_DIR"texture.fs");
 
     constexpr GLfloat vertices[] = {
         //     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
@@ -90,7 +90,7 @@ int L05_texture_main()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     GLint width = 0, height = 0, nrChannels = 0;
-    void *data = stbi_load("img.png", &width, &height, &nrChannels, 0);
+    void *data = stbi_load(IMAGE_DIR"img.png", &width, &height, &nrChannels, 0);
     // std::cout << "width=" << width << ", height=" << height << ", nrChannels=" << nrChannels << std::endl;
     if (data)
     {

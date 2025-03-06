@@ -83,8 +83,8 @@ int L09_basic_lighting_main()
 
     // build and compile our shader zprogram
     // ------------------------------------
-    Shader lightShader("shader_color_light.vs", "shader_color_light.fs");
-    Shader objectShader("shader_color_obj.vs", "shader_color_obj.fs");
+    Shader lightShader(SHADER_DIR"color_light.vs", SHADER_DIR"color_light.fs");
+    Shader objectShader(SHADER_DIR"color_obj.vs", SHADER_DIR"color_obj.fs");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------

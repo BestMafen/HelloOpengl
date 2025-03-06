@@ -39,7 +39,7 @@ int L04_shader_main()
         return -1;
     }
 
-    const Shader ourShader("shader.vs", "shader.fs");
+    const Shader ourShader(SHADER_DIR"triangle.vs", SHADER_DIR"triangle.fs");
 
     constexpr GLfloat vertices[] = {
         0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
