@@ -191,7 +191,7 @@ int L11_lighting_maps_main()
         stbi_image_free(data);
     } else
     {
-        std::cout << "Failed to load texture" << std::endl;
+        std::cout << "Failed to load texture1" << std::endl;
     }
     
     objectShader.use();

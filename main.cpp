@@ -16,8 +16,9 @@ extern int L10_material_main();
 extern int L11_lighting_maps_main();
 extern int L12_light_caster_main();
 extern int L12_light_caster1_main();
+extern int L13_multiple_lights_main();
 
 int main()
 {
-    return L12_light_caster1_main();
+    return L13_multiple_lights_main();
 }
