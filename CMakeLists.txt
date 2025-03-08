@@ -15,4 +15,5 @@ add_executable(HelloOpengl
     ${MY_SOURCE}
 )
 
+target_link_libraries(HelloOpengl ${PROJECT_SOURCE_DIR}/lib/libassimp-5.dll)
 target_link_libraries(HelloOpengl ${PROJECT_SOURCE_DIR}/lib/glfw3.dll)
