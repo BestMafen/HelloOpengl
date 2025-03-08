@@ -8,9 +8,10 @@
 #define SCR_WIDTH         800
 #define SCR_HEIGHT        600
 
-// CLion运行时的目录是/root/cmake-build-debug，要定位到/root/resource
-#define RESOURCE_DIR    "../resource/"
-#define SHADER_DIR      RESOURCE_DIR"shader/"
-#define IMAGE_DIR       RESOURCE_DIR"image/"
+// CLion运行时的目录是/root/cmake-build-debug，要定位到/root/assets
+#define ASSETS_DIR        "../assets/"
+#define SHADER_DIR        ASSETS_DIR"shader/"
+#define IMAGE_DIR         ASSETS_DIR"image/"
+#define OBJ_DIR           ASSETS_DIR"obj/"
 
 #endif //MY_CONFIG_H
