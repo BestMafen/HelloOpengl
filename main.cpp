@@ -14,8 +14,10 @@ extern int L08_camera_class_main();
 extern int L09_basic_lighting_main();
 extern int L10_material_main();
 extern int L11_lighting_maps_main();
+extern int L12_light_caster_main();
+extern int L12_light_caster1_main();
 
 int main()
 {
-    return L11_lighting_maps_main();
+    return L12_light_caster1_main();
 }
