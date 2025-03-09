@@ -22,5 +22,5 @@ extern int L15_depth_testing_main();
 
 int main()
 {
-    return L15_depth_testing_main();
+    return L13_multiple_lights_main();
 }
