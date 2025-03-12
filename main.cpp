@@ -20,8 +20,9 @@ extern int L13_multiple_lights_main();
 extern int L14_model_main();
 extern int L15_depth_testing_main();
 extern int L16_stencil_testing_main();
+extern int L17_blending_main();
 
 int main()
 {
-    return L16_stencil_testing_main();
+    return L17_blending_main();
 }
