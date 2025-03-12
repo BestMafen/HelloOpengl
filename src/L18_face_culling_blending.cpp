@@ -32,7 +32,7 @@ static bool firstMouse = true;
 static float deltaTime = 0.0f;
 static float lastFrame = 0.0f;
 
-int L17_blending_main() {
+int L18_face_culling_main() {
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
@@ -82,48 +82,48 @@ int L17_blending_main() {
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
     float cubeVertices[] = {
-        // positions          // texture Coords
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-        0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
-        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-
-        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-        0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
-        0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
-        -0.5f, 0.5f, 0.5f, 0.0f, 1.0f,
-        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-
-        -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-        -0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-        -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-
-        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-        0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
-        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-
-        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
-        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-        -0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
-        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f
+        // Back face
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, // Bottom-left
+        0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right
+        0.5f, -0.5f, -0.5f,  1.0f, 0.0f, // bottom-right         
+        0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, // bottom-left
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, // top-left
+        // Front face
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-left
+        0.5f, -0.5f,  0.5f,  1.0f, 0.0f, // bottom-right
+        0.5f,  0.5f,  0.5f,  1.0f, 1.0f, // top-right
+        0.5f,  0.5f,  0.5f,  1.0f, 1.0f, // top-right
+        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f, // top-left
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-left
+        // Left face
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-right
+        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-left
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-left
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-left
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-right
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-right
+        // Right face
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-left
+        0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-right
+        0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right         
+        0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // bottom-right
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // top-left
+        0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-left     
+        // Bottom face
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // top-right
+        0.5f, -0.5f, -0.5f,  1.0f, 1.0f, // top-left
+        0.5f, -0.5f,  0.5f,  1.0f, 0.0f, // bottom-left
+        0.5f, -0.5f,  0.5f,  1.0f, 0.0f, // bottom-left
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, // bottom-right
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, // top-right
+        // Top face
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, // top-left
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // bottom-right
+        0.5f,  0.5f, -0.5f,  1.0f, 1.0f, // top-right     
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f, // bottom-right
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, // top-left
+        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f  // bottom-left    
     };
 
     // y轴改成-0.51后可以避免深度冲突
@@ -226,6 +226,8 @@ int L17_blending_main() {
         shaderCube.setMatrix4fv("view", false, glm::value_ptr(view));
         shaderCube.setMatrix4fv("projection", false, glm::value_ptr(projection));
         // cubes
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_FRONT);
         glBindTexture(GL_TEXTURE_2D, cubeTexture);
         glBindVertexArray(cubeVAO);
         model = glm::translate(model, glm::vec3(-1.0f, 0.0f, -1.0f));
@@ -235,6 +237,7 @@ int L17_blending_main() {
         model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
         shaderCube.setMatrix4fv("model", false, glm::value_ptr(model));
         glDrawArrays(GL_TRIANGLES, 0, 36);
+        glDisable(GL_CULL_FACE);
         // floor
         glBindTexture(GL_TEXTURE_2D, floorTexture);
         glBindVertexArray(planeVAO);
@@ -251,7 +254,6 @@ int L17_blending_main() {
             float distance = glm::length(camera.Position - windowLocation[i]);
             sorted[distance] = windowLocation[i];
         }
-
         for (std::map<float, glm::vec3>::reverse_iterator it = sorted.rbegin(); it != sorted.rend(); ++it) {
             model = glm::mat4();
             model = glm::translate(model, it->second);
