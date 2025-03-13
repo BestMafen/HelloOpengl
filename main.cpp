@@ -22,8 +22,9 @@ extern int L15_depth_testing_main();
 extern int L16_stencil_testing_main();
 extern int L17_blending_main();
 extern int L18_face_culling_main();
+extern int L19_frame_buffers_main();
 
 int main()
 {
-    return L18_face_culling_main();
+    return L19_frame_buffers_main();
 }
