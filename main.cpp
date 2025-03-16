@@ -23,8 +23,9 @@ extern int L16_stencil_testing_main();
 extern int L17_blending_main();
 extern int L18_face_culling_main();
 extern int L19_frame_buffers_main();
+extern int L20_cube_maps_main();
 
 int main()
 {
-    return L19_frame_buffers_main();
+    return L20_cube_maps_main();
 }
