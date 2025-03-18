@@ -22,7 +22,7 @@
 
 using namespace std;
 
-unsigned int TextureFromFile(const char *path, const string &directory, bool gamma = false);
+static unsigned int TextureFromFile(const char *path, const string &directory, bool gamma = false);
 
 class Model {
 public:
@@ -189,7 +189,7 @@ private:
 };
 
 
-unsigned int TextureFromFile(const char *path, const string &directory, bool gamma) {
+static unsigned int TextureFromFile(const char *path, const string &directory, bool gamma) {
     string filename = string(path);
     filename = directory + '/' + filename;
 
