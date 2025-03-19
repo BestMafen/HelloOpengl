@@ -26,8 +26,9 @@ extern int L19_frame_buffers_main();
 extern int L20_cube_maps_main();
 extern int L21_geometry_shader_main();
 extern int L21_explode_main();
+extern int L21_normal_main();
 
 int main()
 {
-    return L21_explode_main();
+    return L21_normal_main();
 }
