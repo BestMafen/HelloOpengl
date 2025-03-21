@@ -27,8 +27,10 @@ extern int L20_cube_maps_main();
 extern int L21_geometry_shader_main();
 extern int L21_explode_main();
 extern int L21_normal_main();
+extern int L22_instancing_main();
+extern int L22_instancing1_main();
 
 int main()
 {
-    return L21_normal_main();
+    return L22_instancing1_main();
 }
