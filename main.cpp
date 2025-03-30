@@ -29,8 +29,9 @@ extern int L21_explode_main();
 extern int L21_normal_main();
 extern int L22_instancing_main();
 extern int L22_instancing1_main();
+extern int L23_shadow_mapping_main();
 
 int main()
 {
-    return L22_instancing1_main();
+    return L23_shadow_mapping_main();
 }
